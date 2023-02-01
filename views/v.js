@@ -100,38 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitbtn = document.getElementById("submitbtn");
   submitbtn.addEventListener("click", addTask);
 
-  // to delete data from the todo list
-  // const checkboxes = document.getElementsByClassName("checkbox");
-  // const selectedIds = [];
-
-  // // Create an array to store the selected ids
-  // // const task = { task };
-
-  // // Iterate through all checkboxes
-  // for (let i = 0; i < checkboxes.length; i++) {
-  //   checkboxes[i].addEventListener("change", function () {
-  //     // If the checkbox is checked
-  //     if (checkboxes[i].checked) {
-  //       // Add the id to the selectedIds array
-  //       const id = checkboxes[i].id;
-  //       selectedIds.push(id);
-  //       console.log(selectedIds);
-  //       // const id = checkboxes[i].getAttribute("data-id");
-  //       if (!id) {
-  //         console.log("Error: Invalid id - " + id);
-  //         return;
-  //       }
-  //       // selectedIds.push(id);
-  //     }
-  //   });
-  // }
-
-  // If no ids are selected, return
-  // if (selectedIds.length === 0) {
-  //   return;
-  // }
-
-  // deleteSelected function
   function deleteSelected() {
     console.log("i got here");
     // Send DELETE request to the server for each selected id

@@ -3,6 +3,7 @@ const express = require("express");
 // const { connectToDb, getDb } = require("../server");
 const bodyParser = require("body-parser");
 const { ObjectId } = require("mongodb");
+const bcrypt = require("bcrypt");
 // const Blog = require("./models/blog");
 // const data = require("./activities.js");
 // const { db } = require("./models/blog");
@@ -16,17 +17,6 @@ function appRouters(server) {
   let activities = [];
 
   server.get("/get-list", async (req, res) => {
-    // db.collection("activities")
-    //   .find() //cursor
-    //   .sort({ todo: 1 })
-    //   .forEach((activity) => activities.push(activity))
-    //   .then(() => {
-    //     res.status(200).json(activities);
-    //   });
-    // trycatch(() => {
-    //   res.status(500).json({ error: "could not fetch documents" });
-    // });
-    // res.json({ mssg: "welcome to my api" });
     const db = req.app.locals.dbConnection;
     const todo = await db
       .collection("activities")
@@ -36,18 +26,6 @@ function appRouters(server) {
     res.json(todo);
   });
 
-  // server.get("/number_of_activities", (req, res) => {
-  //   // res.json("activities");
-  //   const db = req.app.locals.dbConnection;
-  //   const todo = db.collection("activities").countDocuments().toArray();
-  //   if (todo.length <= 0) {
-  //     console.log("you have no activity scheduled");
-  //     res.json("you have an empty list");
-  //   } else {
-  //     const db = req.app.locals.dbConnection;
-  //     res.json(`you have : ${todo} activities to do`);
-
-  // });
   server.get("/number-of-activities", (req, res) => {
     const db = req.app.locals.dbConnection;
     db.collection("activities").countDocuments((err, count) => {
@@ -60,35 +38,6 @@ function appRouters(server) {
       }
     });
   });
-
-  // });
-
-  //post requests
-
-  //   server.post("/save-data", (req, res) => {
-  //     // const todo = req.body;
-  //     let task = req.body.task;
-  //     const db = req.app.locals.dbConnection;
-  //     // let time = req.body.time;
-  //     console.log(req.body, "<<< req.body");
-  //     // const todo = db.collection("activities").find().sort({ todo: 1 }).toArray();
-
-  //     for (let i = 0; i < todo.length; i++) {
-  //       if (db[i].task === task) {
-  //         return res.json({
-  //           error: true,
-  //           description: "this task is already on the list",
-  //         });
-  //       }
-  //     }
-
-  //     db.push(req.body);
-  //     console.log(req.body);
-  //     res.json({
-  //       error: true,
-  //       description: "your task has been successfully added to the list.",
-  //     });
-  //   });
 
   server.post("/save-data", (req, res) => {
     // Get the task from the request body
@@ -147,15 +96,86 @@ function appRouters(server) {
       res.status(400).json({ error: "not a valid  doc id" });
     }
   });
-  //         res.status(200).json(result);
-  //       })
-  //       .catch((err) => {
-  //         res.status(500).json({ error: "could not delete document" });
-  //       });
-  //   } else {
-  //     res.status(500).json({ error: "not a valid  doc id" });
-  //   }
-  // });
+
+  //for the signup page
+  server.post("/signup", async (req, res) => {
+    const db = req.app.locals.dbConnection;
+    db.collection("signup");
+    const user = req.body;
+
+    //hash users password for security
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
+    db.collection("signup").insertOne({ user: user }, (err, result) => {
+      if (err) {
+        return res.json({
+          status: 409,
+          // error: true,
+          description: "This user is already registered",
+        });
+      }
+      res.json({
+        status: 200,
+        error: false,
+        description: "user created successfully",
+      });
+    });
+
+    // res
+    //   .json({
+    //     error: false,
+    //     description: "user created successfully",
+    //   })
+    //   .catch((err) => {
+    //     res.status(500).json({ error: "could not create user" });
+    //   });
+  });
+  server.post("/login", async (req, res) => {
+    try {
+      const db = req.app.locals.dbConnection;
+      db.collection("signup");
+      const user = req.body;
+
+      const foundUser = await db
+        .collection("signup")
+        .findOne({ "user.email": user.email });
+
+      if (!foundUser) {
+        return res.status(401).json({
+          description: "Email or password is incorrect",
+        });
+      }
+
+      //comparing the submitted password to the hashed password in the database
+      const passwordsMatch = await bcrypt.compare(
+        user.password,
+        foundUser.user.password
+      );
+      if (!passwordsMatch) {
+        //setting a session or token to indicate the is logged in
+        return res.status(401).json({
+          description: "Email or password is incorrect",
+        });
+      }
+      if (user === "") {
+        return res.status(401).json({
+          description: "please enter your email and password",
+        });
+      } else {
+        res.json({
+          description: "logged in successfully",
+          status: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.json({ error: "error" });
+    }
+
+    // trycatch((err) => {
+    //   ;
+    // });
+  });
 }
 
 module.exports = appRouters;

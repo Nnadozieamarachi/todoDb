@@ -1,0 +1,97 @@
+.loginBackground::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(2, 2, 2, 0.925),
+    rgba(12, 10, 11, 0.918)
+  );
+}
+
+.loginBackground {
+  /* background-image: url("../images/todo-login.jpg"); */
+  width: 100%;
+  height: 900px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.backgroundWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+}
+.loginWrapper {
+  width: 400px;
+  height: 480px;
+  border: solid;
+  position: absolute;
+  top: 25%;
+  left: 33%;
+  display: block;
+  border-color: aliceblue;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(14, 15, 15, 0.438);
+  box-shadow: 0 0.5rem 1rem rgba(243, 238, 238, 0.55),
+    inset 0 -2px 0 rgba(166, 155, 155, 0.25);
+}
+.emailInput,
+.password,
+.userNameInput {
+  width: 300px;
+  height: 50px;
+  margin-left: 28px;
+  margin-top: 25px;
+  margin-bottom: 5px;
+  padding-left: 20px;
+  font-size: large;
+  font-family: "netflix sans", "helvetica neue", helvetica, arial, sans-serif;
+}
+
+.login {
+  color: antiquewhite;
+  font-family: "Times New Roman", Times, serif;
+  margin-left: 10px;
+  padding-left: 100px;
+  margin-top: 50px;
+}
+#signupBtn {
+  margin-left: 54px;
+  margin-top: 30px;
+  padding-left: 8px;
+  width: 100px;
+  height: 48px;
+  border-radius: 7px;
+  background-color: bisque;
+  font-size: large;
+  font-family: "netflix sans", "helvetica neue", helvetica, arial, sans-serif;
+  border: none;
+}
+#signinBtn {
+  margin-left: 54px;
+  margin-top: 30px;
+  padding-left: 8px;
+  width: 100px;
+  height: 48px;
+  border-radius: 7px;
+  background-color: bisque;
+  font-size: large;
+  font-family: "netflix sans", "helvetica neue", helvetica, arial, sans-serif;
+  border: none;
+}
+.btn-field {
+  display: flex;
+}
+#signupBtn:hover {
+  background-color: aquamarine;
+  font-size: larger;
+}
