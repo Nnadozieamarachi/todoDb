@@ -160,6 +160,7 @@ function appRouters(server) {
       if (user === "") {
         return res.status(401).json({
           description: "please enter your email and password",
+          status: false,
         });
       } else {
         res.json({

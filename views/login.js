@@ -4,8 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const email = document.getElementsByClassName("emailInput")[0];
   const password = document.getElementsByClassName("password")[0];
   const userNameInput = document.getElementsByClassName("userNameInput")[0];
-  const signupBtnSwap = document.getElementsByClassName("signupBtnSwap")[0];
-  const signinBtnSwap = document.getElementsByClassName("signupBtnSwap")[0];
+  // const signupBtnSwap = document.getElementsByClassName("signupBtnSwap")[0];
 
   function addNewUser() {
     const userEmail = email.value;
@@ -49,6 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const userPassword = password.value;
     console.log(userEmail);
 
+    if (!userEmail || !userPassword) {
+      alert("please enter both email and password");
+      return;
+    }
+
     fetch("http://localhost:3002/login", {
       method: "POST",
       cors: "no-cors",
@@ -61,17 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log(data);
         if (data.description === "logged in successfully") {
-          // Compare the password entered by the user with the one in the database
-          // const passwordMatch = bcrypt.compare(
-          //   userPassword,
-          //   data.password,
-          //   function (err, result) {
-          //     if (passwordMatch) {
-          //       // Password matched
-          //       res.json({
-          //         description: "logged in successfully",
-          //       });
-          //       // open homepage
+          // open homepage
           window.location = "./home.html";
           //     } else {
           //       // Password didn't match
@@ -86,21 +80,29 @@ document.addEventListener("DOMContentLoaded", function () {
           res.json({
             description: "login failed",
           });
+          alert(data.description);
         }
       })
       .catch((error) => console.log(error));
   }
+  if (signinBtn) {
+    signinBtn.addEventListener("click", loginUser);
+  }
 
-  signinBtn.addEventListener("click", loginUser);
-
-  // function swapSigninPage() {
-  //   window.location = "./signin.html";
-  // }
-  // signinBtnSwap.addEventListener("click", swapSigninPage);
+  function swapSigninPage() {
+    window.location = "./signin.html";
+  }
+  const signinBtnSwap = document.getElementsByClassName("signinButton")[0];
+  if (signinBtnSwap) {
+    signinBtnSwap.addEventListener("click", swapSigninPage);
+  }
 
   //switching  to the signup page
   function swapSignupPage() {
     window.location = "./signup.html";
   }
-  signupBtnSwap.addEventListener("click", swapSignupPage);
+  const signupBtnSwap = document.getElementsByClassName("signupBtnSwap")[0];
+  if (signupBtnSwap) {
+    signupBtnSwap.addEventListener("click", swapSignupPage);
+  }
 });
