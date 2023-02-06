@@ -143,4 +143,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // Clear the selectedIds array
     selectedIds.length = 0;
   }
+  deleteBtn.addEventListener("click", updateView);
 });

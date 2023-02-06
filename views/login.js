@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log(userEmail);
     console.log(userName);
-
+    // if (!userEmail || !userPassword || userName) {
+    //   alert("please enter a valid email user name and password");
+    //   return;
+    // } else {
     fetch("http://localhost:3002/signup", {
       method: "POST",
       cors: "no-cors",
@@ -41,8 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("error parsing response:", error);
       });
   }
+
   signupBtn.addEventListener("click", addNewUser);
 
+  //login user funtion
   function loginUser() {
     const userEmail = email.value;
     const userPassword = password.value;
